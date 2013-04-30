@@ -87,7 +87,7 @@ package Model
 					if (password == user.password) {
 						self = user;
 						setOnlineStatus(true);
-//						return {result:true, msg:"login success"};
+						return {result:true, msg:"login success"};
 					} else {
 						return {result:false, msg:"wrong password"};
 					}
@@ -116,13 +116,13 @@ package Model
 		private function setOnlineStatus(isOnline:Boolean):void
 		{
 //			self.isOnLine = isOnline;
-			setProp(self.name, "isOnLine", isOnline);
+			setProp(self.name, ["isOnLine"], [isOnline]);
 		}
 		
 		public function select(who:String, selected:*):void
 		{
 			trace(who, selected);
-			setProp(who, "select", selected);
+			setProp(who, ["select","isPublish"], [selected, true]);
 		}
 		
 		private function eventHandler(e:NetStatusEvent):void
@@ -141,47 +141,47 @@ package Model
 		
 		private function syncControl(e:SyncEvent):void
 		{
-//			trace("================================================\n", ObjectUtil.toString(e) );
+			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
 			FlexGlobals.topLevelApplication.status_txt.appendText( ObjectUtil.toString(e) );
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
-//				so.setProperty("userList", userList);
 				initSo();
 				return;
 			}
 			for (var i:uint; i < len; i++) {
 				if (e.changeList[i].code == "change") {
-					trace("name", e.changeList[i].name);
+					trace("*name", e.changeList[i].name);
+					if (so.data[e.changeList[i].name]["select"] == self.name) {
+						trace("selected");
+					}
+					
+					if (so.data[e.changeList[i].name]["select"] == self.select) {
+						trace("my selected person has been selected");
+					}
 				} 
 			}
 		}
 		
-		private function setProp(name:String, prop:String, value:*):void
+		/**
+		 * 
+		 * @param name
+		 * @param propArray:Array
+		 * @param valueArray:Array
+		 * 
+		 */		
+		private function setProp(name:String, propArray:Array, valueArray:Array):void
 		{
 			for (var i:int=0; i< userList.length; i++) {
 				var user:User = userList[i];
 				if ( user.name == name) {
-					user[prop] = value;
-					trace(ObjectUtil.toString( user ));
-					trace("user.name", user.name);
+					for (var j:int=0; j<propArray.length;j++) {
+						user[propArray[j]] = valueArray[j];
+					}
+					trace("user.name", user.name, ObjectUtil.toString( user ));
 					so.setProperty(user.name, user);
+					so.setDirty(user.name);
 					break;
 				}
-			}
-//			trace(ObjectUtil.toString( list ));
-//			so.setProperty("userList", list);
-//			so.data.userList = list;
-		}
-		
-		public function test(testvalue:*):void
-		{
-//			so.setProperty("test", testvalue);
-			if (testvalue == "1") {
-				so.setProperty("test", [1,2,3]);
-			} else {
-//				so.setProperty("test", [5,2,3]);
-//				so.data.test[2]=100;
-//				so.setProperty("test.2",100);
 			}
 		}
 		
@@ -198,6 +198,5 @@ package Model
 		{
 			trace(ObjectUtil.toString(e));
 		}
-		
 	}
 }
