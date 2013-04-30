@@ -7,6 +7,7 @@ package Model
 	import Model.DepartmentList;
 	import Model.User;
 	
+	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -86,7 +87,7 @@ package Model
 					if (password == user.password) {
 						self = user;
 						setOnlineStatus(true);
-						return {result:true, msg:"login success"};
+//						return {result:true, msg:"login success"};
 					} else {
 						return {result:false, msg:"wrong password"};
 					}
@@ -126,11 +127,13 @@ package Model
 		
 		private function eventHandler(e:NetStatusEvent):void
 		{
+			trace(ObjectUtil.toString(e));
 			switch( e.info.code )
 			{
 				case NetEventList.NETCONNECTION_CONNECT_SUCCESS:
 					so = SharedObject.getRemote("videoChat", netConnection.uri, false);
 					so.addEventListener(SyncEvent.SYNC, syncControl);
+					so.addEventListener(AsyncErrorEvent.ASYNC_ERROR, syncErrorHandler);
 					so.connect(netConnection);
 					break;
 			}
@@ -138,7 +141,7 @@ package Model
 		
 		private function syncControl(e:SyncEvent):void
 		{
-			trace("================================================\n", ObjectUtil.toString(e) );
+//			trace("================================================\n", ObjectUtil.toString(e) );
 			FlexGlobals.topLevelApplication.status_txt.appendText( ObjectUtil.toString(e) );
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
@@ -181,12 +184,20 @@ package Model
 //				so.setProperty("test.2",100);
 			}
 		}
+		
 		private function initSo():void
 		{
+			trace("initSo");
 			for (var i:int=0; i<userList.length; i++ ) {
 				var user:User = userList[i];
 				so.setProperty(user.name, user);
 			}
 		}
+		
+		private function syncErrorHandler(e:SyntaxError):void
+		{
+			trace(ObjectUtil.toString(e));
+		}
+		
 	}
 }
