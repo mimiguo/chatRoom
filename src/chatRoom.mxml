@@ -33,10 +33,6 @@
 					id_lab.text = status.msg;
 				}
 			}
-			private function test():void
-			{
-//				usermodel.test(test_txt.text);	
-			}
 			
 			private function select():void
 			{
@@ -64,7 +60,6 @@
 		<s:Label id="id_lab"/>
 		<s:HGroup>
 			<s:TextInput  id="test_txt" text="test" />
-			<s:Button label="test" click="test()"/>
 		</s:HGroup>
 	   	<s:TextArea id="status_txt"  width="800" height="500"/>
  		<s:Button label="clear" click="clear()"/>	
