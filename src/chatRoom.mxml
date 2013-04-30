@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="955" height="800" applicationComplete="init()">
+	
+	<fx:Script>
+		<![CDATA[
+			import Event.CustomEvent;
+			
+			import Model.UserModel;
+			
+			import mx.utils.ObjectUtil;
+			private var usermodel:UserModel;
+			private function init():void
+			{
+				usermodel = UserModel.instance;
+				
+//				var testEvent:CustomEvent = new CustomEvent("test");
+//				testEvent.user = "gabe";
+//				testEvent.password = "aaaa";
+//				dispatchEvent(testEvent);
+				
+				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
+				
+			}
+			private function login():void
+			{
+				var status:Object = usermodel.login(name_txt.text, pwd_txt.text);
+				if ( status.result ) {
+					id_lab.text = usermodel.self.name;
+					self_txt.text = id_lab.text;
+				} else {
+					id_lab.text = status.msg;
+				}
+			}
+			private function test():void
+			{
+				usermodel.test(test_txt.text);	
+			}
+			
+			private function select():void
+			{
+				usermodel.select(self_txt.text, talkto_txt.text);
+			}
+			
+			private function clear():void
+			{
+				status_txt.text = "";
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup>
+		<s:HGroup>
+			<s:TextInput  id="name_txt" />
+			<s:TextInput id="pwd_txt" />
+			<s:Button label="login" click="login()" />
+		</s:HGroup>
+		<s:HGroup>
+			<s:TextInput  id="self_txt" />
+			<s:Label text="select" />		
+			<s:TextInput id="talkto_txt" />
+			<s:Button label="select" click="select()" />
+		</s:HGroup>
+		<s:Label id="id_lab"/>
+		<s:HGroup>
+			<s:TextInput  id="test_txt" text="test" />
+			<s:Button label="test" click="test()"/>
+		</s:HGroup>
+	   	<s:TextArea id="status_txt"  width="800"/>
+ 		<s:Button label="clear" click="clear()"/>	
+	</s:VGroup>
+</s:Application>
