@@ -21,9 +21,9 @@ package Model
 	import mx.containers.Form;
 	import mx.core.FlexGlobals;
 	import mx.states.SetProperty;
-	import mx.utils.ObjectProxy;
 	import mx.utils.ObjectUtil;
 	
+	import util.TraceOut;
 	public class UserModel extends EventDispatcher
 	{
 	    private static var _access:Boolean = false;
@@ -67,7 +67,6 @@ package Model
 					_instance = new UserModel();
 					_access = false;
 				}
-				
 				return _instance;
 		}
 		
@@ -115,19 +114,17 @@ package Model
 		 */		
 		private function setOnlineStatus(isOnline:Boolean):void
 		{
-//			self.isOnLine = isOnline;
 			setProp(self.name, ["isOnLine"], [isOnline]);
 		}
 		
 		public function select(who:String, selected:*):void
 		{
-			trace(who, selected);
 			setProp(who, ["select","isPublish"], [selected, true]);
 		}
 		
 		private function eventHandler(e:NetStatusEvent):void
 		{
-			trace(ObjectUtil.toString(e));
+//			trace(ObjectUtil.toString(e));
 			switch( e.info.code )
 			{
 				case NetEventList.NETCONNECTION_CONNECT_SUCCESS:
@@ -142,7 +139,7 @@ package Model
 		private function syncControl(e:SyncEvent):void
 		{
 			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
-			FlexGlobals.topLevelApplication.status_txt.appendText( ObjectUtil.toString(e) );
+			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
 				initSo();
@@ -153,10 +150,26 @@ package Model
 					trace("*name", e.changeList[i].name);
 					if (so.data[e.changeList[i].name]["select"] == self.name) {
 						trace("selected");
+						if (self.isTalking) {
+							if (self.isPublish) {
+								//stop publish
+							} else {
+								//publish stream
+							}
+							
+							if (self.isPlay) {
+								//stop play
+							} else {
+								//play stream
+							}
+							//find who is talking to
+						}
 					}
 					
 					if (so.data[e.changeList[i].name]["select"] == self.select) {
 						trace("my selected person has been selected");
+						//self.stop publish
+						//self.stop play
 					}
 				} 
 			}
