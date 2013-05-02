@@ -6,6 +6,7 @@ package Model
 		public var password:String; 
 		public var isOnLine:Boolean = false; 
 		public var select:String = "";
+		public var selectBy:String = "";
 		public var isTalking:Boolean = false; 
 		public var department:String = "";
 		public var isPublish:Boolean = false;

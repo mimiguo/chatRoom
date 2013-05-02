@@ -32,6 +32,7 @@ package Model
 		private var userList:Array;
 		private var departmentList:Array;
 		public var self:User;
+		private var selectBy:User;
 		private var netConnection:NetConnection;
 		private var so:SharedObject;
 		
@@ -122,6 +123,13 @@ package Model
 			setProp(who, ["select","isPublish"], [selected, true]);
 		}
 		
+		public function finish():void
+		{
+			if (self) {
+				setProp(self.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+			}
+		}
+		
 		private function eventHandler(e:NetStatusEvent):void
 		{
 //			trace(ObjectUtil.toString(e));
@@ -141,35 +149,64 @@ package Model
 			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
 			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
+			
 			if (len == 1 && e.changeList[0].code == "clear") {
 				initSo();
 				return;
 			}
+			
 			for (var i:uint; i < len; i++) {
-				if (e.changeList[i].code == "change") {
+				
+				// if self is not null, means have been login
+				if (e.changeList[i].code == "change" && self) {
 					trace("*name", e.changeList[i].name);
-					if (so.data[e.changeList[i].name]["select"] == self.name) {
-						trace("selected");
-						if (self.isTalking) {
-							if (self.isPublish) {
-								//stop publish
-							} else {
-								//publish stream
-							}
-							
-							if (self.isPlay) {
-								//stop play
-							} else {
-								//play stream
-							}
-							//find who is talking to
-						}
+//					var changer = e.changeList[i].name;
+					var changer:User = e.changeList[i] as User;
+					//finish
+					if (selectBy != null && changer.name == selectBy.name && changer.select == "" && changer.isPublish == false && changer.isPlay == false ) {
+						trace("stop publish ");
+						trace("stop play");
+						TraceOut.traceout("stop publish ");
+						TraceOut.traceout("stop play ");	
 					}
 					
-					if (so.data[e.changeList[i].name]["select"] == self.select) {
+					// if user have been selected 
+					if ( so.data[e.changeList[i].name]["select"] == self.name ) {
+//					if ( changer.select == self.name ) {
+						
+						trace("selected");
+						selectBy = changer;
+//						if (self.isTalking) {
+//							if (self.isPublish) {
+//								//stop publish
+//							} else {
+//								//publish stream
+//							}
+						// keep publishing	
+						trace("publish self");
+						// change chooser 
+//							if (self.isPlay) {
+								//stop play
+//							} else {
+								//play stream
+//							}
+							//find who is talking to
+							//
+							
+//						}
+						//cuz can switch stream to another, directly play
+						trace("play strem", e.changeList[i].name);
+						
+					
+					}
+					
+					// someone break my video chat
+					if ( so.data[e.changeList[i].name]["select"] == self.select ) {
 						trace("my selected person has been selected");
 						//self.stop publish
 						//self.stop play
+						trace("stop publish");
+						trace("stop play");
 					}
 				} 
 			}
@@ -188,7 +225,7 @@ package Model
 				var user:User = userList[i];
 				if ( user.name == name) {
 					for (var j:int=0; j<propArray.length;j++) {
-						user[propArray[j]] = valueArray[j];
+						user[ propArray[j] ] = valueArray[j];
 					}
 					trace("user.name", user.name, ObjectUtil.toString( user ));
 					so.setProperty(user.name, user);

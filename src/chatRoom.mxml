@@ -9,10 +9,16 @@
 			
 			import Model.UserModel;
 			
+			import flash.events.*;
+			
+			import mx.core.UIComponent;
+			import mx.logging.Log;
 			import mx.utils.ObjectUtil;
 			private var usermodel:UserModel;
+			
 			private function init():void
 			{
+				
 				usermodel = UserModel.instance;
 				
 //				var testEvent:CustomEvent = new CustomEvent("test");
@@ -21,8 +27,9 @@
 //				dispatchEvent(testEvent);
 				
 				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
-				
+
 			}
+			
 			private function login():void
 			{
 				var status:Object = usermodel.login(name_txt.text, pwd_txt.text);
@@ -42,6 +49,11 @@
 			private function clear():void
 			{
 				status_txt.text = "";
+			}
+			
+			private function finish():void
+			{
+				usermodel.finish();
 			}
 		]]>
 	</fx:Script>
@@ -63,5 +75,6 @@
 		</s:HGroup>
 	   	<s:TextArea id="status_txt"  width="800" height="500"/>
  		<s:Button label="clear" click="clear()"/>	
+ 		<s:Button label="finish" click="finish()"/>	
 	</s:VGroup>
 </s:Application>
