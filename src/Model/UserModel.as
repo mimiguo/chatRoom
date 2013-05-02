@@ -149,7 +149,6 @@ package Model
 			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
 			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
-			
 			if (len == 1 && e.changeList[0].code == "clear") {
 				initSo();
 				return;
@@ -160,8 +159,7 @@ package Model
 				// if self is not null, means have been login
 				if (e.changeList[i].code == "change" && self) {
 					trace("*name", e.changeList[i].name);
-//					var changer = e.changeList[i].name;
-					var changer:User = e.changeList[i] as User;
+					var changer:User = User.makeVo(so.data[e.changeList[i].name]);
 					//finish
 					if (selectBy != null && changer.name == selectBy.name && changer.select == "" && changer.isPublish == false && changer.isPlay == false ) {
 						trace("stop publish ");
@@ -170,9 +168,10 @@ package Model
 						TraceOut.traceout("stop play ");	
 					}
 					
-					// if user have been selected 
-					if ( so.data[e.changeList[i].name]["select"] == self.name ) {
-//					if ( changer.select == self.name ) {
+					// if user have been selected
+//					trace("select", changer.select);
+//					if ( so.data[e.changeList[i].name]["select"] == self.name ) {
+					if ( changer.select == self.name ) {
 						
 						trace("selected");
 						selectBy = changer;
@@ -201,7 +200,7 @@ package Model
 					}
 					
 					// someone break my video chat
-					if ( so.data[e.changeList[i].name]["select"] == self.select ) {
+					if ( changer.select == self.select ) {
 						trace("my selected person has been selected");
 						//self.stop publish
 						//self.stop play
