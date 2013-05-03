@@ -16,11 +16,8 @@ package Model
 	import flash.net.NetConnection;
 	import flash.net.SharedObject;
 	
-	import flashx.textLayout.elements.BreakElement;
-	
 	import mx.containers.Form;
 	import mx.core.FlexGlobals;
-	import mx.states.SetProperty;
 	import mx.utils.ObjectUtil;
 	
 	import util.TraceOut;
@@ -32,7 +29,7 @@ package Model
 		private var userList:Array;
 		private var departmentList:Array;
 		public var self:User;
-		private var selectBy:User;
+		private var selectBy:Object;
 		private var netConnection:NetConnection;
 		private var so:SharedObject;
 		
@@ -126,7 +123,13 @@ package Model
 		public function finish():void
 		{
 			if (self) {
-				setProp(self.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+				if (self.select == "") {
+					//find who select me
+					var who:Object = findWhoSelectMe();
+					setProp(who.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+				} else {
+					setProp(self.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+				}
 			}
 		}
 		
@@ -159,18 +162,16 @@ package Model
 				// if self is not null, means have been login
 				if (e.changeList[i].code == "change" && self) {
 					trace("*name", e.changeList[i].name);
-					var changer:User = User.makeVo(so.data[e.changeList[i].name]);
+					var changer:Object = so.data[e.changeList[i].name];
 					//finish
 					if (selectBy != null && changer.name == selectBy.name && changer.select == "" && changer.isPublish == false && changer.isPlay == false ) {
-						trace("stop publish ");
-						trace("stop play");
+						selectBy = null;
 						TraceOut.traceout("stop publish ");
 						TraceOut.traceout("stop play ");	
 					}
 					
 					// if user have been selected
 //					trace("select", changer.select);
-//					if ( so.data[e.changeList[i].name]["select"] == self.name ) {
 					if ( changer.select == self.name ) {
 						
 						trace("selected");
@@ -195,15 +196,17 @@ package Model
 //						}
 						//cuz can switch stream to another, directly play
 						trace("play strem", e.changeList[i].name);
-						
-					
 					}
 					
 					// someone break my video chat
-					if ( changer.select == self.select ) {
+					trace(changer.name, "changer.select", changer.select);
+					//if all empty string, no need to go into process
+					if ( changer.select == self.select && changer.select != "") {
+						if (selectBy != null ) {
+							selectBy = null;
+						}
+						finish();
 						trace("my selected person has been selected");
-						//self.stop publish
-						//self.stop play
 						trace("stop publish");
 						trace("stop play");
 					}
@@ -220,16 +223,29 @@ package Model
 		 */		
 		private function setProp(name:String, propArray:Array, valueArray:Array):void
 		{
+			
 			for (var i:int=0; i< userList.length; i++) {
 				var user:User = userList[i];
 				if ( user.name == name) {
 					for (var j:int=0; j<propArray.length;j++) {
 						user[ propArray[j] ] = valueArray[j];
 					}
-					trace("user.name", user.name, ObjectUtil.toString( user ));
+//					trace("user.name", user.name, ObjectUtil.toString( user ));
 					so.setProperty(user.name, user);
 					so.setDirty(user.name);
 					break;
+				}
+			}
+		}
+		
+		private function findWhoSelectMe():*
+		{
+			trace("findWhoSelectMe");
+			for each (var value:Object in so.data) {
+				trace("value.select:", value.select);
+				if ( value.select == self.name )
+				{
+					return value;
 				}
 			}
 		}
@@ -245,7 +261,7 @@ package Model
 		
 		private function syncErrorHandler(e:SyntaxError):void
 		{
-			trace(ObjectUtil.toString(e));
+			trace('SyntaxError', ObjectUtil.toString(e));
 		}
 	}
 }

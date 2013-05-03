@@ -6,6 +6,7 @@ package util
 	{
 		public static function traceout(msg:String):void
 		{
+			trace(msg);
 			FlexGlobals.topLevelApplication.status_txt.appendText( msg );
 		}
 	}
