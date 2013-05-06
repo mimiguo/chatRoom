@@ -5,9 +5,9 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import Event.CustomEvent;
-			
 			import Model.UserModel;
+			
+			import MyEvent.CustomEvent;
 			
 			import flash.events.*;
 			
@@ -18,7 +18,6 @@
 			
 			private function init():void
 			{
-				
 				usermodel = UserModel.instance;
 				
 //				var testEvent:CustomEvent = new CustomEvent("test");
@@ -62,6 +61,7 @@
 			<s:TextInput  id="name_txt" />
 			<s:TextInput id="pwd_txt" />
 			<s:Button label="login" click="login()" />
+			<s:Button label="logout" click="{usermodel.logout()}" />
 		</s:HGroup>
 		<s:HGroup>
 			<s:TextInput  id="self_txt" />

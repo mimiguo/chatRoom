@@ -1,4 +1,4 @@
-package Event
+package MyEvent
 {
 	import flash.events.Event;
 	

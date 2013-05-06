@@ -1,11 +1,12 @@
 package Model
 {
-	import Event.CustomEvent;
-	import Event.EventsList;
-	import Event.NetEventList;
-	
 	import Model.DepartmentList;
+	import Model.SyncService;
 	import Model.User;
+	
+	import MyEvent.CustomEvent;
+	import MyEvent.EventsList;
+	import MyEvent.NetEventList;
 	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
@@ -32,6 +33,7 @@ package Model
 		private var selectBy:Object;
 		private var netConnection:NetConnection;
 		private var so:SharedObject;
+		private var sync:SyncService;
 		
 		public function UserModel()
 		{
@@ -52,10 +54,14 @@ package Model
 				new User("Dr.I", "aaaa", DepartmentList.SURGICAL)
 			);
 			
-			var rtmp:String = 'rtmp://fms.2be.com.tw/basicSO';
+			var rtmp:String = 'rtmp://fms.2be.com.tw/chatRoom';
 			netConnection = new NetConnection();
 			netConnection.addEventListener(NetStatusEvent.NET_STATUS, eventHandler);
 			netConnection.connect(rtmp);
+			
+//			sync = new SyncService();
+//			sync.addEventListener(SyncEvent.SYNC, syncControl);
+//			sync.start();
 		}
 		
 		public static function get instance():UserModel
@@ -75,7 +81,6 @@ package Model
 		 * @return 
 		 * 
 		 */
-
 		public function login(userName:String, password:String):Object
 		{
 			for (var i:int=0; i<userList.length; i++ ) {
@@ -91,6 +96,14 @@ package Model
 				}
 			}
 			return {result:false, msg:"user not found"};
+		}
+		
+		public function logout(e:*=null):void
+		{
+			trace("logout", e);
+			if (self) {
+				setOnlineStatus(false);
+			}
 		}
 		
 		/**
@@ -113,6 +126,9 @@ package Model
 		private function setOnlineStatus(isOnline:Boolean):void
 		{
 			setProp(self.name, ["isOnLine"], [isOnline]);
+			if (isOnline == false) {
+				self = null;
+			}
 		}
 		
 		public function select(who:String, selected:*):void
@@ -227,7 +243,7 @@ package Model
 			for (var i:int=0; i< userList.length; i++) {
 				var user:User = userList[i];
 				if ( user.name == name) {
-					for (var j:int=0; j<propArray.length;j++) {
+						for (var j:int=0; j<propArray.length;j++) {
 						user[ propArray[j] ] = valueArray[j];
 					}
 //					trace("user.name", user.name, ObjectUtil.toString( user ));
