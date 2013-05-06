@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" width="955" height="800"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="955" height="1000"
 			   xmlns:view="view.*"
 			   applicationComplete="init()">
 	
@@ -45,7 +45,7 @@
 			
 			private function select():void
 			{
-				usermodel.select(self_txt.text, talkto_txt.text);
+//				usermodel.select(self_txt.text, talkto_txt.text);
 			}
 			
 			private function clear():void
@@ -59,7 +59,7 @@
 			}
 		]]>
 	</fx:Script>
-	<s:VGroup>
+	<s:VGroup x="5" y="5">
 		<s:HGroup>
 			<s:TextInput  id="name_txt" />
 			<s:TextInput id="pwd_txt" />
@@ -68,17 +68,17 @@
 		</s:HGroup>
 		<s:HGroup>
 			<s:TextInput  id="self_txt" />
-			<s:Label text="select" />		
+			<!--<s:Label text="select" />		
 			<s:TextInput id="talkto_txt" />
-			<s:Button label="select" click="select()" />
+			<s:Button label="select" click="select()" />-->
 			<view:Player/>
 			<view:Department id="userList"/>
 		</s:HGroup>
 		<s:Label id="id_lab"/>
 		<s:HGroup>
-			<s:TextInput  id="test_txt" text="test" />
+			<!--<s:TextInput  id="test_txt" text="test" />-->
 		</s:HGroup>
-	   	<s:TextArea id="status_txt"  width="800" height="500"/>
+	   	<s:TextArea id="status_txt"  width="500" height="300"/>
  		<s:Button label="clear" click="clear()"/>	
  		<s:Button label="finish" click="finish()"/>	
 	</s:VGroup>

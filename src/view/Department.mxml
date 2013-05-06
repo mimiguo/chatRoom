@@ -4,10 +4,14 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx" 
 		width="200" height="250"
 		itemRenderer="view.UserListItemRenderer"
+		changing="select(event)"
 		>
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
+			import mx.utils.ObjectUtil;
+			
+			import spark.events.IndexChangeEvent;
 			
 			import view.UserListItemRenderer;
 			public function init(list:Array):void
@@ -15,6 +19,14 @@
 				trace("init by user model");
 				this.dataProvider = new ArrayCollection(list);
 			}
+			
+		    private function select(event:IndexChangeEvent):void
+			{
+				trace(event.newIndex);
+				var item:* = this.dataProvider.getItemAt(event.newIndex);
+				trace(ObjectUtil.toString(item));
+			}
+			
 		]]>
 	</fx:Script>
 </s:List>

@@ -2,8 +2,24 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="true">
+				autoDrawBackground="true"
+				dataChange="updateRenderer()">
+	<fx:Script>
+		<![CDATA[
+			private const offLineColor:String = "red";
+			private const onLineColor:String = "black";
+			public function updateRenderer():void {
+				//ref User.as
+				showTxt.text = data.name+" : "+data.department;
+				if ( data.isOnLine) {
+					showTxt.setStyle("color", onLineColor);
+				} else {
+					showTxt.setStyle("color", offLineColor);
+				}
+			}
+		]]>
+	</fx:Script>
 	
-	<s:Label text="{data.department} : {data.name}"/>
+	<s:Label id="showTxt" />
 	
 </s:ItemRenderer>
