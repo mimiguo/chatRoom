@@ -21,11 +21,7 @@
 			private function init():void
 			{
 				usermodel = UserModel.instance;
-				
-//				var testEvent:CustomEvent = new CustomEvent("test");
-//				testEvent.user = "gabe";
-//				testEvent.password = "aaaa";
-//				dispatchEvent(testEvent);
+				usermodel.addEventListener(UserModel.EVENT_LIST_CHANGE, userList.refresh);
 				
 				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
 			}

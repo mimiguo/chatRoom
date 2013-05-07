@@ -42,7 +42,7 @@
 				}
 			}
 			
-			public function refresh():void
+			public function refresh(e:*=null):void
 			{
 				ac.refresh();
 			}

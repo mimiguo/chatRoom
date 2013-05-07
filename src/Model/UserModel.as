@@ -25,6 +25,7 @@ package Model
 
 	public class UserModel extends EventDispatcher
 	{
+		public static const EVENT_LIST_CHANGE:String = "EVENT_LIST_CHANGE";
 	    private static var _access:Boolean = false;
 		private static var _instance:UserModel;
 		
@@ -299,7 +300,7 @@ package Model
 				}
 			}
 			trace(ObjectUtil.toString(userList));
-			FlexGlobals.topLevelApplication.userList.refresh();
+			this.dispatchEvent(new Event(EVENT_LIST_CHANGE));
 		}
 	}
 }
