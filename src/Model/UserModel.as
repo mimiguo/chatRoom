@@ -22,6 +22,7 @@ package Model
 	import mx.utils.ObjectUtil;
 	
 	import util.TraceOut;
+
 	public class UserModel extends EventDispatcher
 	{
 	    private static var _access:Boolean = false;
@@ -29,11 +30,11 @@ package Model
 		
 		private var userList:Array;
 		private var departmentList:Array;
-		public var self:User;
+		public var self:Object;
 		private var selectBy:Object;
 		private var netConnection:NetConnection;
 		private var so:SharedObject;
-		private var sync:SyncService;
+//		private var sync:SyncService;
 		
 		public function UserModel()
 		{
@@ -54,9 +55,10 @@ package Model
 				new User("Dr.I", "aaaa", DepartmentList.SURGICAL)
 			);
 			
-			var rtmp:String = 'rtmp://fms.2be.com.tw/chatRoom';
+			var rtmp:String = 'rtmp://fms.2be.com.tw/basicSO';
 			netConnection = new NetConnection();
 			netConnection.addEventListener(NetStatusEvent.NET_STATUS, eventHandler);
+			trace('connect', rtmp);
 			netConnection.connect(rtmp);
 			
 //			sync = new SyncService();
@@ -84,7 +86,7 @@ package Model
 		public function login(userName:String, password:String):Object
 		{
 			for (var i:int=0; i<userList.length; i++ ) {
-				var user:User = userList[i];
+				var user:Object = userList[i];
 				if ( userName == user.name) {
 					if (password == user.password) {
 						self = user;
@@ -125,7 +127,10 @@ package Model
 		 */		
 		private function setOnlineStatus(isOnline:Boolean):void
 		{
+			trace("self", self);
 			setProp(self.name, ["isOnLine"], [isOnline]);
+			updateList(self);
+			
 			if (isOnline == false) {
 				self = null;
 			}
@@ -151,7 +156,7 @@ package Model
 		
 		private function eventHandler(e:NetStatusEvent):void
 		{
-//			trace(ObjectUtil.toString(e));
+			trace(ObjectUtil.toString(e));
 			switch( e.info.code )
 			{
 				case NetEventList.NETCONNECTION_CONNECT_SUCCESS:
@@ -176,7 +181,7 @@ package Model
 			for (var i:uint; i < len; i++) {
 				
 				// if self is not null, means have been login
-				if (e.changeList[i].code == "change" && self) {
+				if (e.changeList[i].code == "change" ) {
 					trace("*name", e.changeList[i].name);
 					var changer:Object = so.data[e.changeList[i].name];
 					//finish
@@ -188,7 +193,7 @@ package Model
 					
 					// if user have been selected
 //					trace("select", changer.select);
-					if ( changer.select == self.name ) {
+					if (self && changer.select == self.name ) {
 						
 						trace("selected");
 						selectBy = changer;
@@ -217,7 +222,7 @@ package Model
 					// someone break my video chat
 					trace(changer.name, "changer.select", changer.select);
 					//if all empty string, no need to go into process
-					if ( changer.select == self.select && changer.select != "") {
+					if ( self && changer.select == self.select && changer.select != "") {
 						if (selectBy != null ) {
 							selectBy = null;
 						}
@@ -226,6 +231,7 @@ package Model
 						trace("stop publish");
 						trace("stop play");
 					}
+					updateList(e.changeList[i]);
 				} 
 			}
 		}
@@ -241,12 +247,13 @@ package Model
 		{
 			
 			for (var i:int=0; i< userList.length; i++) {
-				var user:User = userList[i];
+				var user:Object = userList[i];
 				if ( user.name == name) {
 						for (var j:int=0; j<propArray.length;j++) {
 						user[ propArray[j] ] = valueArray[j];
 					}
 //					trace("user.name", user.name, ObjectUtil.toString( user ));
+						trace('so', so);
 					so.setProperty(user.name, user);
 					so.setDirty(user.name);
 					break;
@@ -270,7 +277,7 @@ package Model
 		{
 			trace("initSo");
 			for (var i:int=0; i<userList.length; i++ ) {
-				var user:User = userList[i];
+				var user:Object = userList[i];
 				so.setProperty(user.name, user);
 			}
 		}
@@ -278,6 +285,21 @@ package Model
 		private function syncErrorHandler(e:SyntaxError):void
 		{
 			trace('SyntaxError', ObjectUtil.toString(e));
+		}
+		
+		
+		private function updateList(changer:Object):void
+		{
+			trace("updateList");
+			for (var i:int=0; i< userList.length; i++) {
+				trace(userList[i].name, changer.name);
+				if (userList[i].name == changer.name) {
+					userList[i] = so.data[changer.name];
+					break;
+				}
+			}
+			trace(ObjectUtil.toString(userList));
+			FlexGlobals.topLevelApplication.userList.refresh();
 		}
 	}
 }

@@ -28,16 +28,13 @@
 //				dispatchEvent(testEvent);
 				
 				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
-				userList.init(usermodel.getUserList());
-
 			}
 			
 			private function login():void
 			{
 				var status:Object = usermodel.login(name_txt.text, pwd_txt.text);
 				if ( status.result ) {
-					id_lab.text = usermodel.self.name;
-					self_txt.text = id_lab.text;
+					id_lab.text = "user:"+usermodel.self.name;
 				} else {
 					id_lab.text = status.msg;
 				}
@@ -57,25 +54,28 @@
 			{
 				usermodel.finish();
 			}
+			
+			private function closeSwfHandler(e:Event):void
+			{
+				usermodel.logout();	
+			}
 		]]>
 	</fx:Script>
-	<s:VGroup x="5" y="5">
+	<s:VGroup x="5" y="5" gap="30">
 		<s:HGroup>
 			<s:TextInput  id="name_txt" />
 			<s:TextInput id="pwd_txt" />
 			<s:Button label="login" click="login()" />
 			<s:Button label="logout" click="{usermodel.logout()}" />
 		</s:HGroup>
-		<s:HGroup>
-			<s:TextInput  id="self_txt" />
-			<!--<s:Label text="select" />		
-			<s:TextInput id="talkto_txt" />
-			<s:Button label="select" click="select()" />-->
+		<s:HGroup >
 			<view:Player/>
-			<view:Department id="userList"/>
+			<s:VGroup>
+				<view:Department id="userList"/>
+				<s:Label id="id_lab"/>
+			</s:VGroup>
 		</s:HGroup>
-		<s:Label id="id_lab"/>
-		<s:HGroup>
+		<s:HGroup >
 			<!--<s:TextInput  id="test_txt" text="test" />-->
 		</s:HGroup>
 	   	<s:TextArea id="status_txt"  width="500" height="300"/>

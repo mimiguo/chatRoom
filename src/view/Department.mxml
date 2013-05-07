@@ -5,28 +5,51 @@
 		width="200" height="250"
 		itemRenderer="view.UserListItemRenderer"
 		changing="select(event)"
+		 creationComplete="init()"
 		>
 	<fx:Script>
 		<![CDATA[
+			import Model.UserModel;
+			
 			import mx.collections.ArrayCollection;
+			import mx.events.CollectionEvent;
 			import mx.utils.ObjectUtil;
 			
 			import spark.events.IndexChangeEvent;
 			
 			import view.UserListItemRenderer;
-			public function init(list:Array):void
+			
+			private var ac:ArrayCollection;
+			
+			[Bindable]
+			private var list:Array;
+			public function init():void
 			{
-				trace("init by user model");
-				this.dataProvider = new ArrayCollection(list);
+				list = UserModel.instance.getUserList();
+				ac = new ArrayCollection(list);
+				ac.addEventListener(CollectionEvent.COLLECTION_CHANGE, onChange);
+				this.dataProvider = ac;
 			}
 			
 		    private function select(event:IndexChangeEvent):void
 			{
-				trace(event.newIndex);
+				trace("select", event.newIndex);
 				var item:* = this.dataProvider.getItemAt(event.newIndex);
 				trace(ObjectUtil.toString(item));
+				if (item.isOnLine && item.name != UserModel.instance.self.name) {
+					var userModel:UserModel = UserModel.instance;
+					userModel.select(userModel.self.name, item.name);
+				}
 			}
 			
+			public function refresh():void
+			{
+				ac.refresh();
+			}
+			
+			private function onChange(e:CollectionEvent):void
+			{
+			}
 		]]>
 	</fx:Script>
 </s:List>

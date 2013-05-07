@@ -6,11 +6,11 @@
 				dataChange="updateRenderer()">
 	<fx:Script>
 		<![CDATA[
-			private const offLineColor:String = "red";
-			private const onLineColor:String = "black";
+			private const offLineColor:uint = 0x669999 ;
+			private const onLineColor:uint = 0x000066;
 			public function updateRenderer():void {
 				//ref User.as
-				showTxt.text = data.name+" : "+data.department;
+				showTxt.text = data.department+" : "+data.name;
 				if ( data.isOnLine) {
 					showTxt.setStyle("color", onLineColor);
 				} else {
