@@ -2,32 +2,57 @@
 <s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 width="320" height="450"
+		 width="{videoH}" height="{videoH}"
 		 initialize="init()">
 	<fx:Script>
 		<![CDATA[
-//			import control.PlayerControl;
-//			import model.PlayerModel;
-//			import Model.FMSservice;
-//			
-//			private var theService:FMSservice;
-//			private var _playerModel:PlayerModel;
-//			private var theController:PlayerControl;
+			import Model.FMSservice;
+			import Model.UserModel;
+			
+			import control.PlayerControl;
+			
+			import mx.core.FlexGlobals;
+			import mx.core.UIComponent;
+			private var playerController:PlayerControl;
+			
+			private var streamVideo:Video;
+			private var container:UIComponent;
+			
+			[Bindable]
+			private var videoW:int = 700;
+			
+			[Bindable]
+			private var videoH:int = 500;
 			
 			private function init():void
 			{
-//				theService = new FMSservice();
-//				_playerModel = new PlayerModel();
-//				theController = new PlayerControl(theService, _playerModel);
-//				
-//				videoPlaceHolder.addElement( theService.container );
-////				控制音量的部分
-//				controlVolume.addEventListener(Event.CHANGE, theController.controlSoundVolume);
+				playerController = new PlayerControl();
+				
+				streamVideo = new Video(videoW, videoH);
+				streamVideo.name = "videoPlayer";
+				container = new UIComponent();
+				container.addChild( streamVideo );
+				
+				videoPlaceHolder.addElement( container );
+				//				controlVolume
+				volumeSlider.addEventListener(Event.CHANGE, playerController.controlSoundVolume);
+			}
+			
+			public function closeVideo():void
+			{
+				streamVideo.attachNetStream(null);
+				container.removeChild(streamVideo);
+			}
+			
+			public function attachStream(stream:NetStream):void
+			{
+//				trace("view attachStream");
+//				var service:FMSservice = FlexGlobals.topLevelApplication.fmsService;
+				streamVideo.attachNetStream(stream);
 			}
 		]]>
 	</fx:Script>
-	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="320" height="450"/>
-	<!--<s:Button id="stopCamera" label="關閉視訊" click="theController.closeCameraStream()"/>-->
-	<s:Button id="stopCamera" label="關閉視訊" />
-	<s:HSlider id="controlVolume" width="100"/>
+	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="{videoW}" height="{videoH}"/>
+	<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
+	<s:HSlider id="volumeSlider" width="100"/>
 </s:VGroup>

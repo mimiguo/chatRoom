@@ -26,6 +26,8 @@ package Model
 	public class UserModel extends EventDispatcher
 	{
 		public static const EVENT_LIST_CHANGE:String = "EVENT_LIST_CHANGE";
+		public static const EVENT_SELECT_DONE:String = "EVENT_SELECT_DONE";
+		public static const EVENT_BEEN_SELECTED:String = "EVENT_BEEN_SELECTED";
 	    private static var _access:Boolean = false;
 		private static var _instance:UserModel;
 		
@@ -171,8 +173,8 @@ package Model
 		
 		private function syncControl(e:SyncEvent):void
 		{
-			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
-			TraceOut.traceout(ObjectUtil.toString(e));
+//			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
+//			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
 				initSo();
@@ -181,7 +183,6 @@ package Model
 			
 			for (var i:uint; i < len; i++) {
 				
-				// if self is not null, means have been login
 				if (e.changeList[i].code == "change" ) {
 					trace("*name", e.changeList[i].name);
 					var changer:Object = so.data[e.changeList[i].name];
@@ -198,14 +199,9 @@ package Model
 						
 						trace("selected");
 						selectBy = changer;
-//						if (self.isTalking) {
-//							if (self.isPublish) {
-//								//stop publish
-//							} else {
-//								//publish stream
-//							}
 						// keep publishing	
 						trace("publish self");
+						this.dispatchEvent(new Event(EVENT_SELECT_DONE));
 						// change chooser 
 //							if (self.isPlay) {
 								//stop play
@@ -214,10 +210,12 @@ package Model
 //							}
 							//find who is talking to
 							//
-							
 //						}
 						//cuz can switch stream to another, directly play
 						trace("play strem", e.changeList[i].name);
+						var playEvent:CustomEvent = new CustomEvent(EVENT_BEEN_SELECTED);
+						playEvent.user = e.changeList[i];
+						dispatchEvent(playEvent);
 					}
 					
 					// someone break my video chat
@@ -234,6 +232,12 @@ package Model
 					}
 					updateList(e.changeList[i]);
 				} 
+				
+				if ( e.changeList[i].code == "success") {
+					if (self && e.changeList[i].name == self.name && self.select != "") {
+						this.dispatchEvent(new Event(EVENT_SELECT_DONE));
+					}
+				}
 			}
 		}
 		

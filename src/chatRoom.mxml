@@ -7,6 +7,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import Model.FMSservice;
 			import Model.UserModel;
 			
 			import MyEvent.CustomEvent;
@@ -17,13 +18,25 @@
 			import mx.utils.ObjectUtil;
 			
 			private var usermodel:UserModel;
+			public var fmsService:FMSservice;
 			
 			private function init():void
 			{
 				usermodel = UserModel.instance;
+				fmsService= new FMSservice();
 				usermodel.addEventListener(UserModel.EVENT_LIST_CHANGE, userList.refresh);
+				usermodel.addEventListener(UserModel.EVENT_SELECT_DONE, fmsService.publish);
+//				videoPlayer.addEventListener(UserModel.EVENT_BEEN_SELECTED, videoPlayer.attachStream);
+//				usermodel.addEventListener(UserModel.EVENT_BEEN_SELECTED, fmsService.play);
+				usermodel.addEventListener(UserModel.EVENT_BEEN_SELECTED, pubishAndPlay);
 				
 				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
+			}
+			
+			private function pubishAndPlay(e:*):void
+			{
+//				videoPlayer.attachStream();
+				fmsService.play(e);
 			}
 			
 			private function login():void
@@ -60,10 +73,10 @@
 			<s:Button label="logout" click="{usermodel.logout()}" />
 		</s:HGroup>
 		<s:HGroup >
-			<view:Player/>
+			<view:Player id="videoPlayer"/>
 			<s:VGroup>
 				<view:Department id="userList"/>
-				<s:Label id="id_lab"/>
+				<s:Label id="id_lab" color="#1D7C65"/>
 			</s:VGroup>
 			<s:VGroup>
 			   	<s:TextArea id="status_txt"  width="500" height="300"/>
