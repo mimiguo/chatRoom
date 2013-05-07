@@ -33,9 +33,7 @@
 			
 		    private function select(event:IndexChangeEvent):void
 			{
-				trace("select", event.newIndex);
 				var item:* = this.dataProvider.getItemAt(event.newIndex);
-				trace(ObjectUtil.toString(item));
 				if (item.isOnLine && item.name != UserModel.instance.self.name) {
 					var userModel:UserModel = UserModel.instance;
 					userModel.select(userModel.self.name, item.name);

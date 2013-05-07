@@ -55,7 +55,7 @@
 	<s:VGroup x="5" y="5" gap="30">
 		<s:HGroup>
 			<s:TextInput  id="name_txt" />
-			<s:TextInput id="pwd_txt" />
+			<s:TextInput id="pwd_txt" displayAsPassword="true" />
 			<s:Button label="login" click="login()" />
 			<s:Button label="logout" click="{usermodel.logout()}" />
 		</s:HGroup>
