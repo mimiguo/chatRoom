@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" width="1050" height="650"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="1050" height="650"
 			   xmlns:view="view.*"
 			   applicationComplete="init()">
-	
 	<fx:Script>
 		<![CDATA[
 			import Model.FMSservice;
@@ -15,36 +15,47 @@
 			
 			import flash.events.*;
 			
+			import mx.core.IFlexDisplayObject;
 			import mx.core.UIComponent;
+			import mx.managers.PopUpManager;
 			import mx.utils.ObjectUtil;
+			
+			import view.LoginWindow;
 			
 			private var usermodel:UserModel;
 			public var fmsService:FMSservice;
 			
 			private function init():void
 			{
+				showWindow();
+				
 				usermodel = UserModel.instance;
 				fmsService= new FMSservice();
-				usermodel.addEventListener(UserModel.EVENT_LIST_CHANGE, userList.refresh);
+				usermodel.addEventListener(EventsList.EVENT_LIST_CHANGE, userList.refresh);
 				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
 				
-				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
+//				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
+			}
+			
+			private function showWindow():void
+			{
+				var loginWindow:LoginWindow = LoginWindow(PopUpManager.createPopUp(this, LoginWindow, true));
+				loginWindow.x = 225;
+				loginWindow.y = 225;
+				loginWindow.addEventListener("close", closeHandler);
+				loginWindow.addEventListener( EventsList.CONTAINER_ALPHA_CHANGE, changeContainerAlpha );
+			}
+			
+			private function changeContainerAlpha(event:Event):void
+			{
+				trace("OutlineContainer alpha 值 可以改了");
+				outlineContainer.alpha = 1;
 			}
 			
 			private function pubishAndPlay(e:*):void
 			{
 				fmsService.publish();
 				fmsService.play(e);
-			}
-			
-			private function login():void
-			{
-				var status:Object = usermodel.login(name_txt.text, pwd_txt.text);
-				if ( status.result ) {
-					id_lab.text = "user:"+usermodel.self.name;
-				} else {
-					id_lab.text = status.msg;
-				}
 			}
 			
 			private function clear():void
@@ -61,28 +72,32 @@
 			{
 				usermodel.logout();	
 			}
+
+			private function closeHandler(evt:Event):void
+			{
+				evt.target.removeEventListener("close", closeHandler);
+				PopUpManager.removePopUp( evt.target as IFlexDisplayObject );
+			}
 		]]>
 	</fx:Script>
-	<s:VGroup x="5" y="5" gap="30">
-		<s:HGroup>
-			<s:TextInput  id="name_txt" />
-			<s:TextInput id="pwd_txt" displayAsPassword="true" />
-			<s:Button label="login" click="login()" />
-			<s:Button label="logout" click="{usermodel.logout()}" />
-		</s:HGroup>
-		<s:HGroup >
-			<view:Player id="videoPlayer"/>
-			<s:VGroup>
-				<view:Department id="userList"/>
-				<s:Label id="id_lab" color="#1D7C65"/>
-			</s:VGroup>
-			<s:VGroup>
-			   	<s:TextArea id="status_txt"  width="500" height="300"/>
-		 		<s:Button label="clear" click="clear()"/>	
-			</s:VGroup>
-		</s:HGroup>
-		<s:HGroup >
-		</s:HGroup>
- 		<s:Button label="finish" click="finish()"/>	
-	</s:VGroup>
+	<s:BorderContainer id="outlineContainer" alpha="0" 
+					   backgroundColor="#000000"
+					   backgroundAlpha="0.5"
+					   x="100" y="70"
+					   width="1024" height="768">
+		<s:VGroup x="5" y="5" gap="30">
+			<s:HGroup >
+				<view:Player id="videoPlayer"/>
+				<s:VGroup>
+					<view:Department id="userList"/>
+					<s:Label id="id_lab" color="#1D7C65"/>
+				</s:VGroup>
+				<s:VGroup>
+				   	<s:TextArea id="status_txt"  width="500" height="300"/>
+			 		<s:Button label="clear" click="clear()"/>	
+				</s:VGroup>
+			</s:HGroup>
+	 		<s:Button label="finish" click="finish()"/>	
+		</s:VGroup>
+	</s:BorderContainer>
 </s:Application>

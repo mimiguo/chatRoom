@@ -1,20 +1,29 @@
 package control
 {
-	import model.StaffModel;
+	import Model.UserModel;
+	import MyEvent.EventsList;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 
-	public class LoginWindowControl
+	public class LoginWindowControl extends EventDispatcher
 	{
-		private var staffModel:StaffModel;
+		private var usermodel:UserModel;
 		
-		public function LoginWindowControl( _staffModel:StaffModel )
+		public function LoginWindowControl()
 		{
-			staffModel = _staffModel;
+			usermodel = UserModel.instance;
 		}
 		
-		public function pressConfirmButton():void
+		public function login(name:String, pwd:String):void
 		{
-			trace("開始進行 登入人員的帳密比對過程");	
+			var status:Object = usermodel.login(name, pwd);
+			if ( status.result ) {
+				dispatchEvent( new Event( EventsList.LOGIN_SUCCESS ));
+//				id_lab.text = "user:"+usermodel.self.name;
+			} else {
+				dispatchEvent( new Event( EventsList.LOGIN_FAILED ));
+//				id_lab.text = status.msg;
+			}
 		}
-		
 	}
 }
