@@ -25,9 +25,6 @@ package Model
 
 	public class UserModel extends EventDispatcher
 	{
-		public static const EVENT_LIST_CHANGE:String = "EVENT_LIST_CHANGE";
-		public static const EVENT_SELECT_DONE:String = "EVENT_SELECT_DONE";
-		public static const EVENT_BEEN_SELECTED:String = "EVENT_BEEN_SELECTED";
 	    private static var _access:Boolean = false;
 		private static var _instance:UserModel;
 		
@@ -37,7 +34,6 @@ package Model
 		private var selectBy:Object;
 		private var netConnection:NetConnection;
 		private var so:SharedObject;
-//		private var sync:SyncService;
 		
 		public function UserModel()
 		{
@@ -63,10 +59,6 @@ package Model
 			netConnection.addEventListener(NetStatusEvent.NET_STATUS, eventHandler);
 			trace('connect', rtmp);
 			netConnection.connect(rtmp);
-			
-//			sync = new SyncService();
-//			sync.addEventListener(SyncEvent.SYNC, syncControl);
-//			sync.start();
 		}
 		
 		public static function get instance():UserModel
@@ -201,20 +193,10 @@ package Model
 						selectBy = changer;
 						// keep publishing	
 						trace("publish self");
-						this.dispatchEvent(new Event(EVENT_SELECT_DONE));
-						// change chooser 
-//							if (self.isPlay) {
-								//stop play
-//							} else {
-								//play stream
-//							}
-							//find who is talking to
-							//
-//						}
 						//cuz can switch stream to another, directly play
 						trace("play strem", e.changeList[i].name);
-						var playEvent:CustomEvent = new CustomEvent(EVENT_BEEN_SELECTED);
-						playEvent.user = e.changeList[i];
+						var playEvent:CustomEvent = new CustomEvent(EventsList.READY_TO_CHAT);
+						playEvent.play = e.changeList[i].name;
 						dispatchEvent(playEvent);
 					}
 					
@@ -235,7 +217,9 @@ package Model
 				
 				if ( e.changeList[i].code == "success") {
 					if (self && e.changeList[i].name == self.name && self.select != "") {
-						this.dispatchEvent(new Event(EVENT_SELECT_DONE));
+						var chatEvent:CustomEvent = new CustomEvent(EventsList.READY_TO_CHAT);
+						chatEvent.play = self.select;
+						dispatchEvent(chatEvent);
 					}
 				}
 			}
@@ -258,7 +242,7 @@ package Model
 						user[ propArray[j] ] = valueArray[j];
 					}
 //					trace("user.name", user.name, ObjectUtil.toString( user ));
-						trace('so', so);
+					trace('so', so);
 					so.setProperty(user.name, user);
 					so.setDirty(user.name);
 					break;
@@ -304,7 +288,7 @@ package Model
 				}
 			}
 			trace(ObjectUtil.toString(userList));
-			this.dispatchEvent(new Event(EVENT_LIST_CHANGE));
+			this.dispatchEvent(new Event(EventsList.EVENT_LIST_CHANGE));
 		}
 	}
 }

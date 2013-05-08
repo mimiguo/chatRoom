@@ -11,6 +11,7 @@
 			import Model.UserModel;
 			
 			import MyEvent.CustomEvent;
+			import MyEvent.EventsList;
 			
 			import flash.events.*;
 			
@@ -25,17 +26,14 @@
 				usermodel = UserModel.instance;
 				fmsService= new FMSservice();
 				usermodel.addEventListener(UserModel.EVENT_LIST_CHANGE, userList.refresh);
-				usermodel.addEventListener(UserModel.EVENT_SELECT_DONE, fmsService.publish);
-//				videoPlayer.addEventListener(UserModel.EVENT_BEEN_SELECTED, videoPlayer.attachStream);
-//				usermodel.addEventListener(UserModel.EVENT_BEEN_SELECTED, fmsService.play);
-				usermodel.addEventListener(UserModel.EVENT_BEEN_SELECTED, pubishAndPlay);
+				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
 				
 				name_txt.text = "Nerse", pwd_txt.text = "aaaa";
 			}
 			
 			private function pubishAndPlay(e:*):void
 			{
-//				videoPlayer.attachStream();
+				fmsService.publish();
 				fmsService.play(e);
 			}
 			

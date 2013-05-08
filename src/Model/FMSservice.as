@@ -106,16 +106,13 @@ package Model
 			}
 		}
 		
-//		public function play(streamKey:String):void
 		public function play(e:*):void
 		{
 			if (nc_Receiver.connected) {
-				trace("stream play", e.user.name+"!");
-//				trace(ObjectUtil.toString(e));
 				ns_Receiver = new NetStream( nc_Receiver );
-				
+				// TODO
 				FlexGlobals.topLevelApplication.videoPlayer.attachStream(ns_Receiver);
-				ns_Receiver.play( e.user.name );
+				ns_Receiver.play( e.play );
 			}
 		}
 		
@@ -123,7 +120,6 @@ package Model
 		{
 			ns_Publisher.attachCamera( null );
 		}
-		
 		
 		public function onBWDone(...rest):void
 		{
@@ -135,6 +131,7 @@ package Model
 				trace("\t"+i+":"+rest[i]);
 			}
 		}
+		
 		public function onMetaData(info:Object):void
 		{
 			trace('onMetaData');
@@ -146,6 +143,7 @@ package Model
 				trace(p, info[p]);
 			}
 		}
+		
 		public function onPlayStatus(info:Object):void
 		{
 			trace('onPlayStatus');
@@ -157,6 +155,7 @@ package Model
 				trace('*', p, info[p]);
 			}
 		}
+		
 		public function onXMPData(...rest):void
 		{
 			if (showlog == false) {
