@@ -58,11 +58,6 @@
 				fmsService.play(e);
 			}
 			
-			private function clear():void
-			{
-				status_txt.text = "";
-			}
-			
 			private function finish():void
 			{
 				usermodel.finish();
@@ -91,10 +86,6 @@
 				<s:VGroup>
 					<view:Department id="userList"/>
 					<s:Label id="id_lab" color="#1D7C65"/>
-				</s:VGroup>
-				<s:VGroup>
-				   	<s:TextArea id="status_txt"  width="500" height="300"/>
-			 		<s:Button label="clear" click="clear()"/>	
 				</s:VGroup>
 			</s:HGroup>
 	 		<s:Button label="finish" click="finish()"/>	
