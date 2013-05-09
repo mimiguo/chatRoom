@@ -27,9 +27,13 @@
 				showWindow();
 				
 				usermodel = UserModel.instance;
-				fmsService= new FMSservice();
+				fmsService = FMSservice.instance;
+				
 				usermodel.addEventListener(EventsList.EVENT_LIST_CHANGE, userList.refresh);
-				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);				
+				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
+				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);
+				
+//				name_txt.text = "Dr.C", pwd_txt.text = "aaaa";
 			}
 			
 			private function showWindow():void
@@ -48,13 +52,17 @@
 			
 			private function pubishAndPlay(e:*):void
 			{
+				// not working
+				//userList.displayWhoSelectMe(e);
 				fmsService.publish();
 				fmsService.play(e);
 			}
 			
-			private function finish():void
+			private function finishChat(e:Event=null):void
 			{
-				usermodel.finish();
+				fmsService.closeCameraStream();
+				videoPlayer.closeVideo();
+				userList.unselect();
 			}
 			
 			private function logout():void
@@ -81,7 +89,6 @@
 				<s:VGroup>
 					<view:Department id="userList"/>
 					<s:Label id="id_lab" color="#1D7C65"/>
-			 		<s:Button label="finish" click="finish()"/>	
 			 		<s:Button label="登出" click="logout()"/>	
 				</s:VGroup>
 			</s:HGroup>

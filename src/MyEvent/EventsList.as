@@ -18,5 +18,6 @@ package MyEvent
 		static public const LOGIN_SUCCESS:String 		= "LOGIN_SUCCESS";
 		static public const LOGIN_FAILED:String 			= "LOGIN_FAILED";
 		static public const CONTAINER_ALPHA_CHANGE:String= "CONTAINER_ALPHA_CHANGE";
+		static public const EVENT_FINISH_CHAT:String 	= "EVENT_FINISH_CHAT";
 	}
 }

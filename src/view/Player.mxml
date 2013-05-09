@@ -9,7 +9,7 @@
 			import Model.FMSservice;
 			import Model.UserModel;
 			import control.PlayerControl;
-			import mx.core.FlexGlobals;
+			
 			import mx.core.UIComponent;
 			
 			[Bindable]
@@ -22,15 +22,14 @@
 			
 			private function init():void
 			{
-				playerController = new PlayerControl();
+				playerController = new PlayerControl(this);
 				
 				streamVideo = new Video(videoW, videoH);
-				streamVideo.name = "videoPlayer";
 				container = new UIComponent();
 				container.addChild( streamVideo );
 				
 				videoPlaceHolder.addElement( container );
-//				controlVolume
+				// controlVolume
 				volumeSlider.addEventListener(Event.CHANGE, playerController.controlSoundVolume);
 			}
 			
@@ -42,15 +41,12 @@
 			
 			public function attachStream(stream:NetStream):void
 			{
-//				trace("view attachStream");
-//				var service:FMSservice = FlexGlobals.topLevelApplication.fmsService;
+			    container.addChild( streamVideo );
 				streamVideo.attachNetStream(stream);
 			}
 		]]>
 	</fx:Script>
 	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="{videoW}" height="{videoH}"/>
-	<s:HGroup>
-		<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
-		<s:HSlider id="volumeSlider" width="100"/>
-	</s:HGroup>
+	<s:Button id="cameraCloser" label="關閉視訊" click="UserModel.instance.finish()"/>
+	<s:HSlider id="volumeSlider" width="100"/>
 </s:VGroup>
