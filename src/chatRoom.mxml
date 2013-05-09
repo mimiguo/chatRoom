@@ -57,11 +57,6 @@
 				fmsService.play(e);
 			}
 			
-			private function finish():void
-			{
-				usermodel.finish();
-			}
-			
 			private function finishChat(e:Event=null):void
 			{
 				fmsService.closeCameraStream();

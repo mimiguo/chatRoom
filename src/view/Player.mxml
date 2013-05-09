@@ -9,6 +9,7 @@
 			import Model.FMSservice;
 			import Model.UserModel;
 			import control.PlayerControl;
+			
 			import mx.core.UIComponent;
 			
 			[Bindable]
@@ -47,8 +48,6 @@
 		]]>
 	</fx:Script>
 	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="{videoW}" height="{videoH}"/>
-	<s:HGroup>
-		<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
-		<s:HSlider id="volumeSlider" width="100"/>
-	</s:HGroup>
+	<s:Button id="cameraCloser" label="關閉視訊" click="UserModel.instance.finish()"/>
+	<s:HSlider id="volumeSlider" width="100"/>
 </s:VGroup>
