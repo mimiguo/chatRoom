@@ -1,5 +1,6 @@
 package Model
 {
+	import MyEvent.CustomEvent;
 	import MyEvent.NetEventList;
 	
 	import flash.events.NetStatusEvent;
@@ -27,8 +28,6 @@ package Model
 		private var showlog:Boolean = true;
 		public function FMSservice()
 		{
-			trace("FMSservice constuctor");
-			
 			if ( !_access) {
 				throw new Error("Singleton");
 			}
@@ -125,7 +124,7 @@ package Model
 			}
 		}
 		
-		public function play(e:*):void
+		public function play(e:CustomEvent):void
 		{
 			if (nc_Receiver.connected) {
 				ns_Receiver = new NetStream( nc_Receiver );

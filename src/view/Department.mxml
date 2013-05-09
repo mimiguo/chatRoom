@@ -11,6 +11,8 @@
 		<![CDATA[
 			import Model.UserModel;
 			
+			import MyEvent.CustomEvent;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.CollectionEvent;
 			import mx.utils.ObjectUtil;
@@ -52,6 +54,16 @@
 			public function unselect():void
 			{
 				this.selectedIndex = -1;
+			}
+			
+			// not working
+			public function displayWhoSelectMe(e:CustomEvent):void
+			{
+				trace("displayWhoSelectMe", this.selectedIndex);
+				if (this.selectedIndex == -1) {
+//					trace("e.playIdx", e.playIdx, typeof(e.playIdx));
+					this.selectedIndex = int( e.playIdx );
+				}
 			}
 		]]>
 	</fx:Script>

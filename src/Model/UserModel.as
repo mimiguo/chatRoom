@@ -216,11 +216,10 @@ package Model
 							trace("selected");
 							selectBy = changer;
 							// keep publishing	
-							trace("publish self");
 							//cuz can switch stream to another, directly play
-							trace("play strem", e.changeList[i].name);
 							var playEvent:CustomEvent = new CustomEvent(EventsList.READY_TO_CHAT);
 							playEvent.play = e.changeList[i].name;
+//							playEvent.playIdx = findIndexWhoSelectMe(e.changeList[i].name);
 							dispatchEvent(playEvent);
 						}
 						
@@ -294,6 +293,16 @@ package Model
 					return value;
 				}
 			}
+		}
+		
+		private function findIndexWhoSelectMe(name:String):int
+		{
+			for (var i:int=0; i< userList.length; i++) {
+				if (userList[i].name == name) {
+					return i;
+				}
+			}
+			return -1;
 		}
 		
 		private function initSo():void

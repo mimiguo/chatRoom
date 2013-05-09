@@ -35,6 +35,8 @@
 			
 			private function pubishAndPlay(e:*):void
 			{
+				// not working
+				//userList.displayWhoSelectMe(e);
 				fmsService.publish();
 				fmsService.play(e);
 			}
