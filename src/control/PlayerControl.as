@@ -4,26 +4,28 @@ package control
 	
 	import flash.media.SoundTransform;
 	
-	import mx.core.FlexGlobals;
-	
 	import spark.components.VGroup;
+	
+	import view.Player;
+
 	public class PlayerControl
 	{
 		private var fmsService:FMSservice;
-		public var st:SoundTransform;
+		private var st:SoundTransform;
+		private var player:Player;
 		
-		public function PlayerControl()
+		public function PlayerControl( player:Player )
 		{
 			fmsService = FMSservice.instance; 
 			st = new SoundTransform;
+			this.player = player;
 		}
 		
 		public function closeCameraStream():void
 		{
 			trace("fmsService", fmsService);
 			fmsService.closeCameraStream();
-			var player:* = FlexGlobals.topLevelApplication.videoPlayer;
-			player.closeVideo();
+			this.player.closeVideo();
 		}
 		
 		public function controlSoundVolume( value:int ):void
