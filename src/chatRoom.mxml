@@ -67,13 +67,18 @@
 				evt.target.removeEventListener("close", closeHandler);
 				PopUpManager.removePopUp( evt.target as IFlexDisplayObject );
 			}
+			
+			private function playerFullScreen():void
+			{
+				stage.fullScreenSourceRect = new Rectangle(7, 7, 639, 479);
+				stage.displayState = StageDisplayState.FULL_SCREEN;
+			}
 		]]>
 	</fx:Script>
 	<s:BorderContainer id="outlineContainer" alpha="0" 
 					   backgroundColor="#000000"
 					   backgroundAlpha="0"
 					   borderAlpha="0"
-					   x="10" y="10"
 					   width="880" height="540">
 		<s:VGroup x="5" y="5" gap="30">
 			<s:HGroup >
@@ -83,6 +88,7 @@
 					<s:Label id="id_lab" color="#1D7C65"/>
 			 		<s:Button label="finish" click="finish()"/>	
 			 		<s:Button label="登出" click="logout()"/>	
+			 		<s:Button label="對話視窗全螢幕" click="playerFullScreen()"/>	
 				</s:VGroup>
 			</s:HGroup>
 		</s:VGroup>
