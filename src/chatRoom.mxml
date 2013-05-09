@@ -34,7 +34,6 @@
 				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);
 				
 //				name_txt.text = "Dr.C", pwd_txt.text = "aaaa";
-//				this.addEventListener(Event.UNLOAD, function ():void {trace("unload");});
 			}
 			
 			private function showWindow():void
@@ -61,6 +60,7 @@
 			{
 				fmsService.closeCameraStream();
 				videoPlayer.closeVideo();
+				userList.unselect();
 			}
 			
 			private function logout():void
@@ -87,7 +87,6 @@
 				<s:VGroup>
 					<view:Department id="userList"/>
 					<s:Label id="id_lab" color="#1D7C65"/>
-			 		<s:Button label="finish" click="finish()"/>	
 			 		<s:Button label="登出" click="logout()"/>	
 				</s:VGroup>
 			</s:HGroup>

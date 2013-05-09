@@ -45,6 +45,11 @@
 			private function onChange(e:CollectionEvent):void
 			{
 			}
+			
+			public function unselect():void
+			{
+				this.selectedIndex = -1;
+			}
 		]]>
 	</fx:Script>
 </s:List>

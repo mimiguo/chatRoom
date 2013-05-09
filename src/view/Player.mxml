@@ -25,12 +25,11 @@
 				playerController = new PlayerControl(this);
 				
 				streamVideo = new Video(videoW, videoH);
-				streamVideo.name = "videoPlayer";
 				container = new UIComponent();
 				container.addChild( streamVideo );
 				
 				videoPlaceHolder.addElement( container );
-//				controlVolume
+				// controlVolume
 				volumeSlider.addEventListener(Event.CHANGE, playerController.controlSoundVolume);
 			}
 			
@@ -42,7 +41,7 @@
 			
 			public function attachStream(stream:NetStream):void
 			{
-//				trace("view attachStream");
+			    container.addChild( streamVideo );
 				streamVideo.attachNetStream(stream);
 			}
 		]]>
