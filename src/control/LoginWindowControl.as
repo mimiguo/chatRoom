@@ -1,9 +1,13 @@
 package control
 {
 	import Model.UserModel;
+	
 	import MyEvent.EventsList;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	
+	import mx.core.FlexGlobals;
 
 	public class LoginWindowControl extends EventDispatcher
 	{
@@ -19,10 +23,10 @@ package control
 			var status:Object = usermodel.login(name, pwd);
 			if ( status.result ) {
 				dispatchEvent( new Event( EventsList.LOGIN_SUCCESS ));
-//				id_lab.text = "user:"+usermodel.self.name;
+				FlexGlobals.topLevelApplication.id_lab.text = "user:"+usermodel.self.name;
 			} else {
 				dispatchEvent( new Event( EventsList.LOGIN_FAILED ));
-//				id_lab.text = status.msg;
+				FlexGlobals.topLevelApplication.id_lab.text = status.msg;
 			}
 		}
 	}
