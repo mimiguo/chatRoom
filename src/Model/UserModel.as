@@ -15,7 +15,6 @@ package Model
 	import flash.net.NetConnection;
 	import flash.net.SharedObject;
 	import mx.containers.Form;
-	import mx.core.FlexGlobals;
 	import mx.utils.ObjectUtil;
 	import util.TraceOut;
 

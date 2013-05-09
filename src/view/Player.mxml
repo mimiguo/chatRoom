@@ -9,7 +9,6 @@
 			import Model.FMSservice;
 			import Model.UserModel;
 			import control.PlayerControl;
-			import mx.core.FlexGlobals;
 			import mx.core.UIComponent;
 			
 			[Bindable]
@@ -22,7 +21,7 @@
 			
 			private function init():void
 			{
-				playerController = new PlayerControl();
+				playerController = new PlayerControl(this);
 				
 				streamVideo = new Video(videoW, videoH);
 				streamVideo.name = "videoPlayer";
