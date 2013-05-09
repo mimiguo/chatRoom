@@ -127,6 +127,7 @@ package Model
 			updateList(self);
 			
 			if (isOnline == false) {
+				finish();
 				self = null;
 			}
 		}
@@ -138,15 +139,19 @@ package Model
 		
 		public function finish():void
 		{
+			trace("self", self);
 			if (self) {
 				if (self.select == "") {
 					//find who select me
 					var who:Object = findWhoSelectMe();
-					setProp(who.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+					if ( who ) {
+						setProp(who.name, ["select", "isPublish", "isPlay"], ["", false, false]);
+					}
 				} else {
 					setProp(self.name, ["select", "isPublish", "isPlay"], ["", false, false]);
 				}
 			}
+			dispatchEvent( new Event(EventsList.EVENT_FINISH_CHAT) );
 		}
 		
 		private function eventHandler(e:NetStatusEvent):void
@@ -165,7 +170,7 @@ package Model
 		
 		private function syncControl(e:SyncEvent):void
 		{
-//			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
+			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
 //			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
@@ -178,40 +183,70 @@ package Model
 				if (e.changeList[i].code == "change" ) {
 					trace("*name", e.changeList[i].name);
 					var changer:Object = so.data[e.changeList[i].name];
+					// changer and vldValue means same person
+					trace("changer",ObjectUtil.toString(changer));
+					var oldValue:Object = e.changeList[i].oldValue;
+					trace("oldValue:", ObjectUtil.toString(oldValue));
+					
+					if ( self ) {
+						if ( changer.name == self.name) {
+							self = changer;
+						}
+						
+						if ( changer.isOnLine == false) {
+							//have been changed
+							if (oldValue && oldValue.select == self.name && changer.select == "" ) {
+								trace("oldValue.select:", oldValue.select, "select:",changer.select);
+								finish();
+								return;
+							}
+						}
+						
+						// if someone off line, check if he is talking to me
+						trace("changer.isOnline", changer.isOnLine);
+						
+						// if my select changes to empty ; check if someone i talk to is offline
+						if ( changer.name == self.name && self.select == "" && oldValue.select != "" ) {
+								finish();
+								return;
+						}
+						
+						// if user have been selected
+						if ( changer.select == self.name ) {
+							
+							trace("selected");
+							selectBy = changer;
+							// keep publishing	
+							trace("publish self");
+							//cuz can switch stream to another, directly play
+							trace("play strem", e.changeList[i].name);
+							var playEvent:CustomEvent = new CustomEvent(EventsList.READY_TO_CHAT);
+							playEvent.play = e.changeList[i].name;
+							dispatchEvent(playEvent);
+						}
+						
+						// someone break my video chat
+						trace(changer.name, "changer.select", changer.select);
+						//if all empty string, no need to go into process
+						if ( changer.select == self.select && changer.select != "") {
+							if (selectBy != null ) {
+								selectBy = null;
+							}
+							trace("my selected person has been selected");
+							trace("stop publish");
+							trace("stop play");
+							finish();
+						}
+					}
+					
 					//finish
 					if (selectBy != null && changer.name == selectBy.name && changer.select == "" && changer.isPublish == false && changer.isPlay == false ) {
 						selectBy = null;
 						TraceOut.traceout("stop publish ");
-						TraceOut.traceout("stop play ");	
-					}
-					
-					// if user have been selected
-//					trace("select", changer.select);
-					if (self && changer.select == self.name ) {
-						
-						trace("selected");
-						selectBy = changer;
-						// keep publishing	
-						trace("publish self");
-						//cuz can switch stream to another, directly play
-						trace("play strem", e.changeList[i].name);
-						var playEvent:CustomEvent = new CustomEvent(EventsList.READY_TO_CHAT);
-						playEvent.play = e.changeList[i].name;
-						dispatchEvent(playEvent);
-					}
-					
-					// someone break my video chat
-					trace(changer.name, "changer.select", changer.select);
-					//if all empty string, no need to go into process
-					if ( self && changer.select == self.select && changer.select != "") {
-						if (selectBy != null ) {
-							selectBy = null;
-						}
+						TraceOut.traceout("stop play ");
 						finish();
-						trace("my selected person has been selected");
-						trace("stop publish");
-						trace("stop play");
 					}
+					
 					updateList(e.changeList[i]);
 				} 
 				
@@ -275,7 +310,6 @@ package Model
 		{
 			trace('SyntaxError', ObjectUtil.toString(e));
 		}
-		
 		
 		private function updateList(changer:Object):void
 		{
