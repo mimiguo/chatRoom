@@ -15,5 +15,6 @@ package MyEvent
 		static public const RECONNECT_LIVE:String       = "RECONNECT_LIVE";
 		static public const READY_TO_CHAT:String        = "READY_TO_CHAT";
 		static public const EVENT_LIST_CHANGE:String 	= "EVENT_LIST_CHANGE";
+		static public const EVENT_FINISH_CHAT:String 	= "EVENT_FINISH_CHAT";
 	}
 }
