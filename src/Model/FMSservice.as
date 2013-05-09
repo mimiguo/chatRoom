@@ -1,13 +1,11 @@
 package Model
 {
 	import MyEvent.NetEventList;
-	
 	import flash.events.NetStatusEvent;
 	import flash.media.Camera;
 	import flash.media.Microphone;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	
 	import mx.core.FlexGlobals;
 	import mx.utils.ObjectUtil;
 
@@ -20,20 +18,32 @@ package Model
 		public var ns_Publisher:NetStream;
 		public var nc_Receiver:NetConnection;
 		public var ns_Receiver:NetStream;
+		public var serverURL:String;
+		
+		[Bindable]
+		public var camFPS:int = 30;
+		[Bindable]
+		public var camBandwidth:int = 200000;
+		[Bindable]
+		public var camQuality:int = 90;
 		
 		private var showlog:Boolean = true;
 		public function FMSservice()
 		{
 			cam = Camera.getCamera();
 			mic = Microphone.getMicrophone();
+			cam.setMode(640, 480, camFPS, true);
+			cam.setQuality(camBandwidth, camQuality);
+			
+			serverURL = "rtmp://fms.2be.com.tw/live";
 			
 			nc_Publisher = new NetConnection();
-			nc_Publisher.connect("rtmp://fms.2be.com.tw/live");
+			nc_Publisher.connect(serverURL);
 			nc_Publisher.client = this;
 			nc_Publisher.addEventListener( NetStatusEvent.NET_STATUS, connectHandler);
 			
 			nc_Receiver = new NetConnection();
-			nc_Receiver.connect("rtmp://fms.2be.com.tw/live");
+			nc_Receiver.connect(serverURL);
 			nc_Receiver.client = this;
 			nc_Receiver.addEventListener( NetStatusEvent.NET_STATUS, connectHandler);
 		}
@@ -41,7 +51,7 @@ package Model
 		private function connectHandler(e:NetStatusEvent) : void 
 		{
 			trace(ObjectUtil.toString(e));
-			//			trace(e.info.code);
+//			trace(e.info.code);
 			switch (e.info.code)
 			{
 				case NetEventList.NETCONNECTION_CONNECT_CLOSED:

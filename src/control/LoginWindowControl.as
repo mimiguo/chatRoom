@@ -1,12 +1,9 @@
 package control
 {
 	import Model.UserModel;
-	
 	import MyEvent.EventsList;
-	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	
 	import mx.core.FlexGlobals;
 
 	public class LoginWindowControl extends EventDispatcher

@@ -1,11 +1,8 @@
 package control
 {
 	import Model.FMSservice;
-	
 	import flash.media.SoundTransform;
-	
 	import mx.core.FlexGlobals;
-	
 	import spark.components.VGroup;
 
 	public class PlayerControl

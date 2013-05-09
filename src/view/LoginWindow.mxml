@@ -19,9 +19,6 @@
 				
 				loginWindowControl.addEventListener( EventsList.LOGIN_SUCCESS, LoginSucced );
 				loginWindowControl.addEventListener( EventsList.LOGIN_FAILED, LoginFailed );
-				
-//				staffModel.addEventListener( LoginAndPlayerEvent.LOGIN_SUCCESS, LoginSucced );
-//				staffModel.addEventListener( LoginAndPlayerEvent.LOGIN_FAILED, LoginFailed );
 			}
 			
 			private function clearButtonClear():void

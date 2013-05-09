@@ -1,14 +1,11 @@
 package Model
 {
 	import MyEvent.NetEventList;
-	
 	import flash.events.*;
 	import flash.net.NetConnection;
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
-	
 	import mx.utils.ObjectUtil;
-	
 	import util.TraceOut;
 	
 	public class SyncService extends EventDispatcher

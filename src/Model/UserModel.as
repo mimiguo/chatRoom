@@ -3,11 +3,9 @@ package Model
 	import Model.DepartmentList;
 	import Model.SyncService;
 	import Model.User;
-	
 	import MyEvent.CustomEvent;
 	import MyEvent.EventsList;
 	import MyEvent.NetEventList;
-	
 	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -16,11 +14,9 @@ package Model
 	import flash.events.SyncEvent;
 	import flash.net.NetConnection;
 	import flash.net.SharedObject;
-	
 	import mx.containers.Form;
 	import mx.core.FlexGlobals;
 	import mx.utils.ObjectUtil;
-	
 	import util.TraceOut;
 
 	public class UserModel extends EventDispatcher
@@ -275,7 +271,6 @@ package Model
 		{
 			trace('SyntaxError', ObjectUtil.toString(e));
 		}
-		
 		
 		private function updateList(changer:Object):void
 		{
