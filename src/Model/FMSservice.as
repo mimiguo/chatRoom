@@ -20,11 +20,8 @@ package Model
 		public var ns_Receiver:NetStream;
 		public var serverURL:String;
 		
-		[Bindable]
 		public var camFPS:int = 30;
-		[Bindable]
 		public var camBandwidth:int = 200000;
-		[Bindable]
 		public var camQuality:int = 90;
 		
 		private var showlog:Boolean = true;
