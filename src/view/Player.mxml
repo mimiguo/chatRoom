@@ -8,21 +8,17 @@
 		<![CDATA[
 			import Model.FMSservice;
 			import Model.UserModel;
-			
 			import control.PlayerControl;
-			
 			import mx.core.FlexGlobals;
 			import mx.core.UIComponent;
-			private var playerController:PlayerControl;
-			
-			private var streamVideo:Video;
-			private var container:UIComponent;
 			
 			[Bindable]
 			private var videoW:int = 700;
-			
 			[Bindable]
 			private var videoH:int = 500;
+			private var playerController:PlayerControl;
+			private var streamVideo:Video;
+			private var container:UIComponent;
 			
 			private function init():void
 			{
@@ -53,6 +49,8 @@
 		]]>
 	</fx:Script>
 	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="{videoW}" height="{videoH}"/>
-	<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
-	<s:HSlider id="volumeSlider" width="100"/>
+	<s:HGroup>
+		<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
+		<s:HSlider id="volumeSlider" width="100"/>
+	</s:HGroup>
 </s:VGroup>

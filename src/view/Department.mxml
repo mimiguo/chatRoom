@@ -10,19 +10,16 @@
 	<fx:Script>
 		<![CDATA[
 			import Model.UserModel;
-			
 			import mx.collections.ArrayCollection;
 			import mx.events.CollectionEvent;
 			import mx.utils.ObjectUtil;
-			
 			import spark.events.IndexChangeEvent;
-			
 			import view.UserListItemRenderer;
-			
-			private var ac:ArrayCollection;
 			
 			[Bindable]
 			private var list:Array;
+			private var ac:ArrayCollection;
+			
 			public function init():void
 			{
 				list = UserModel.instance.getUserList();

@@ -2,24 +2,20 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   width="1050" height="650"
+			   width="930" height="550"
 			   xmlns:view="view.*"
 			   applicationComplete="init()">
 	<fx:Script>
 		<![CDATA[
 			import Model.FMSservice;
 			import Model.UserModel;
-			
 			import MyEvent.CustomEvent;
 			import MyEvent.EventsList;
-			
 			import flash.events.*;
-			
 			import mx.core.IFlexDisplayObject;
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import mx.utils.ObjectUtil;
-			
 			import view.LoginWindow;
 			
 			private var usermodel:UserModel;
@@ -40,15 +36,14 @@
 			private function showWindow():void
 			{
 				var loginWindow:LoginWindow = LoginWindow(PopUpManager.createPopUp(this, LoginWindow, true));
-				loginWindow.x = 225;
-				loginWindow.y = 225;
+				loginWindow.x = 265;
+				loginWindow.y = 10;
 				loginWindow.addEventListener("close", closeHandler);
 				loginWindow.addEventListener( EventsList.CONTAINER_ALPHA_CHANGE, changeContainerAlpha );
 			}
 			
 			private function changeContainerAlpha(event:Event):void
 			{
-				trace("OutlineContainer alpha 值 可以改了");
 				outlineContainer.alpha = 1;
 			}
 			
@@ -77,18 +72,19 @@
 	</fx:Script>
 	<s:BorderContainer id="outlineContainer" alpha="0" 
 					   backgroundColor="#000000"
-					   backgroundAlpha="0.5"
-					   x="100" y="70"
-					   width="1024" height="768">
+					   backgroundAlpha="0"
+					   borderAlpha="0"
+					   x="10" y="10"
+					   width="930" height="550">
 		<s:VGroup x="5" y="5" gap="30">
 			<s:HGroup >
 				<view:Player id="videoPlayer"/>
 				<s:VGroup>
 					<view:Department id="userList"/>
 					<s:Label id="id_lab" color="#1D7C65"/>
+			 		<s:Button label="finish" click="finish()"/>	
 				</s:VGroup>
 			</s:HGroup>
-	 		<s:Button label="finish" click="finish()"/>	
 		</s:VGroup>
 	</s:BorderContainer>
 </s:Application>
