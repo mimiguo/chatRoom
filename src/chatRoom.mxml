@@ -31,7 +31,6 @@
 				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);
 				
 				name_txt.text = "Dr.C", pwd_txt.text = "aaaa";
-//				this.addEventListener(Event.UNLOAD, function ():void {trace("unload");});
 			}
 			
 			private function pubishAndPlay(e:*):void
@@ -59,6 +58,7 @@
 			{
 				fmsService.closeCameraStream();
 				videoPlayer.closeVideo();
+				userList.unselect();
 			}
 			
 			private function closeSwfHandler(e:Event):void
@@ -84,8 +84,6 @@
 			   	<s:TextArea id="status_txt"  width="500" height="300"/>
 		 		<s:Button label="clear" click="clear()"/>	
 			</s:VGroup>
-		</s:HGroup>
-		<s:HGroup >
 		</s:HGroup>
 	</s:VGroup>
 </s:Application>
