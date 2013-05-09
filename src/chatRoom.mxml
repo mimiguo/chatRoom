@@ -29,7 +29,11 @@
 				usermodel = UserModel.instance;
 				fmsService= new FMSservice();
 				usermodel.addEventListener(EventsList.EVENT_LIST_CHANGE, userList.refresh);
-				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);				
+				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
+				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);
+				
+//				name_txt.text = "Dr.C", pwd_txt.text = "aaaa";
+//				this.addEventListener(Event.UNLOAD, function ():void {trace("unload");});
 			}
 			
 			private function showWindow():void
@@ -55,6 +59,12 @@
 			private function finish():void
 			{
 				usermodel.finish();
+			}
+			
+			private function finishChat(e:Event=null):void
+			{
+				fmsService.closeCameraStream();
+				videoPlayer.closeVideo();
 			}
 			
 			private function logout():void
