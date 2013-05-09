@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="400" height="300"
+			   title="請輸入你的帳號和密碼"
+			   initialize="init()">
+	<fx:Script>
+		<![CDATA[
+			import MyEvent.EventsList;
+			import control.LoginWindowControl;
+			import mx.managers.PopUpManager;
+			
+			private var loginWindowControl:LoginWindowControl;
+			
+			private function init():void
+			{
+				loginWindowControl = new LoginWindowControl();
+				
+				loginWindowControl.addEventListener( EventsList.LOGIN_SUCCESS, LoginSucced );
+				loginWindowControl.addEventListener( EventsList.LOGIN_FAILED, LoginFailed );
+			}
+			
+			private function clearButtonClear():void
+			{
+				name_txt.text = "";
+				pwd_txt.text = "";
+			}
+			
+			private function LoginSucced(event:String):void
+			{
+				dispatchEvent( new Event( EventsList.CONTAINER_ALPHA_CHANGE ));
+				dispatchEvent( new Event( "close" ));
+			}
+			
+			private function LoginFailed(event:String):void
+			{
+				showFailedMessage.alpha = 1;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:BorderContainer x="100" y="10" borderVisible="false">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<s:Label id="showFailedMessage" text="帳號或密碼輸入錯誤" alpha="0"/>
+		<s:HGroup>
+			<s:Label text="ID:"/>
+			<s:TextInput id="name_txt" text="Nerse"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="Password:"/>
+			<s:TextInput id="pwd_txt" text="aaaa" displayAsPassword="true"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Button id="login" label="登入" click="loginWindowControl.login(name_txt.text, pwd_txt.text)"/>
+			<s:Button id="logout" label="清除" click="clearButtonClear()"/>
+		</s:HGroup>
+	</s:BorderContainer>
+</s:TitleWindow>

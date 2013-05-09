@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:List xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx" 
+		width="200" height="250"
+		itemRenderer="view.UserListItemRenderer"
+		changing="select(event)"
+		creationComplete="init()"
+		>
+	<fx:Script>
+		<![CDATA[
+			import Model.UserModel;
+			import mx.collections.ArrayCollection;
+			import mx.events.CollectionEvent;
+			import mx.utils.ObjectUtil;
+			import spark.events.IndexChangeEvent;
+			import view.UserListItemRenderer;
+			
+			[Bindable]
+			private var list:Array;
+			private var ac:ArrayCollection;
+			
+			public function init():void
+			{
+				list = UserModel.instance.getUserList();
+				ac = new ArrayCollection(list);
+				ac.addEventListener(CollectionEvent.COLLECTION_CHANGE, onChange);
+				this.dataProvider = ac;
+			}
+			
+		    private function select(event:IndexChangeEvent):void
+			{
+				var item:* = this.dataProvider.getItemAt(event.newIndex);
+				if (item.isOnLine && item.name != UserModel.instance.self.name) {
+					var userModel:UserModel = UserModel.instance;
+					userModel.select(userModel.self.name, item.name);
+				}
+			}
+			
+			public function refresh(e:*=null):void
+			{
+				ac.refresh();
+			}
+			
+			private function onChange(e:CollectionEvent):void
+			{
+			}
+		]]>
+	</fx:Script>
+</s:List>
