@@ -4,7 +4,6 @@ package control
 	import flash.media.SoundTransform;
 	import mx.core.FlexGlobals;
 	import spark.components.VGroup;
-
 	public class PlayerControl
 	{
 		private var fmsService:FMSservice;
@@ -12,7 +11,7 @@ package control
 		
 		public function PlayerControl()
 		{
-			fmsService = FlexGlobals.topLevelApplication.fmsService;
+			fmsService = FMSservice.instance; 
 			st = new SoundTransform;
 		}
 		

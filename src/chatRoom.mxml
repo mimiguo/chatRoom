@@ -27,7 +27,8 @@
 				showWindow();
 				
 				usermodel = UserModel.instance;
-				fmsService= new FMSservice();
+				fmsService = FMSservice.instance;
+				
 				usermodel.addEventListener(EventsList.EVENT_LIST_CHANGE, userList.refresh);
 				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
 				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);

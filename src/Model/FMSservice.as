@@ -11,6 +11,9 @@ package Model
 
 	public class FMSservice
 	{
+		private static var _access:Boolean = false;
+		private static var _instance:FMSservice;
+		
 		private var cam:Camera;
 		private var mic:Microphone;
 		
@@ -27,6 +30,12 @@ package Model
 		private var showlog:Boolean = true;
 		public function FMSservice()
 		{
+			trace("FMSservice constuctor");
+			
+			if ( !_access) {
+				throw new Error("Singleton");
+			}
+			
 			cam = Camera.getCamera();
 			mic = Microphone.getMicrophone();
 			cam.setMode(640, 480, camFPS, true);
@@ -43,6 +52,16 @@ package Model
 			nc_Receiver.connect(serverURL);
 			nc_Receiver.client = this;
 			nc_Receiver.addEventListener( NetStatusEvent.NET_STATUS, connectHandler);
+		}
+		
+		public static function get instance():FMSservice
+		{
+			if ( _instance == null) {
+				_access = true;
+				_instance = new FMSservice();
+				_access = false;
+			}
+			return _instance;
 		}
 		
 		private function connectHandler(e:NetStatusEvent) : void 
