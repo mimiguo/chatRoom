@@ -10,6 +10,7 @@
 			import Model.UserModel;
 			
 			import control.PlayerControl;
+			
 			import mx.core.UIComponent;
 			private var playerController:PlayerControl;
 			
@@ -50,6 +51,7 @@
 		]]>
 	</fx:Script>
 	<s:BorderContainer backgroundColor="#000000" id="videoPlaceHolder" width="{videoW}" height="{videoH}"/>
-	<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>
+	<!--<s:Button id="cameraCloser" label="關閉視訊" click="playerController.closeCameraStream()"/>-->
+	<s:Button id="cameraCloser" label="關閉視訊" click="UserModel.instance.finish()"/>
 	<s:HSlider id="volumeSlider" width="100"/>
 </s:VGroup>

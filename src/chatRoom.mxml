@@ -55,11 +55,6 @@
 				status_txt.text = "";
 			}
 			
-			private function finish():void
-			{
-				usermodel.finish();
-			}
-			
 			private function finishChat(e:Event=null):void
 			{
 				fmsService.closeCameraStream();
@@ -92,6 +87,5 @@
 		</s:HGroup>
 		<s:HGroup >
 		</s:HGroup>
- 		<s:Button label="finish" click="finish()"/>	
 	</s:VGroup>
 </s:Application>
