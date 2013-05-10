@@ -116,7 +116,7 @@ package Model
 		 */		
 		private function setOnlineStatus(isOnline:Boolean):void
 		{
-			trace("self", self);
+//			trace("self", self);
 			setProp(self.name, ["isOnLine"], [isOnline]);
 			updateList(self);
 			
@@ -138,6 +138,7 @@ package Model
 				if (self.select == "") {
 					//find who select me
 					var who:Object = findWhoSelectMe();
+					trace("who", who);
 					if ( who ) {
 						setProp(who.name, ["select", "isPublish", "isPlay"], ["", false, false]);
 					}
@@ -277,7 +278,7 @@ package Model
 		
 		private function findWhoSelectMe():*
 		{
-			trace("findWhoSelectMe");
+			trace("findWhoSelectMe", so.data);
 			for each (var value:Object in so.data) {
 				trace("value.select:", value.select);
 				if ( value.select == self.name )
@@ -315,13 +316,13 @@ package Model
 		{
 			trace("updateList");
 			for (var i:int=0; i< userList.length; i++) {
-				trace(userList[i].name, changer.name);
+//				trace(userList[i].name, changer.name);
 				if (userList[i].name == changer.name) {
 					userList[i] = so.data[changer.name];
 					break;
 				}
 			}
-			trace(ObjectUtil.toString(userList));
+//			trace(ObjectUtil.toString(userList));
 			this.dispatchEvent(new Event(EventsList.EVENT_LIST_CHANGE));
 		}
 	}

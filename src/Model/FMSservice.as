@@ -143,7 +143,10 @@ package Model
 		
 		public function closeCameraStream():void
 		{
-			ns_Publisher.attachCamera( null );
+			trace("ns_Publisher", ns_Publisher);
+			if (ns_Publisher) {
+				ns_Publisher.attachCamera( null );
+			}
 		}
 		
 		public function onBWDone(...rest):void
