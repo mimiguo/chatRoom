@@ -47,7 +47,7 @@
 		<s:Label id="showFailedMessage" text="帳號或密碼輸入錯誤" alpha="0"/>
 		<s:HGroup>
 			<s:Label text="ID:"/>
-			<s:TextInput id="name_txt" text="Nerse"/>
+			<s:TextInput id="name_txt" text="Dr.C"/>
 		</s:HGroup>
 		<s:HGroup>
 			<s:Label text="Password:"/>

@@ -2,6 +2,7 @@
 .flexProperties
 .project
 .settings/
+.DS_Store
 bin-debug/
 html-template/
 
