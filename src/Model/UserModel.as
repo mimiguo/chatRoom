@@ -16,7 +16,6 @@ package Model
 	import flash.net.SharedObject;
 	import mx.containers.Form;
 	import mx.utils.ObjectUtil;
-	import util.TraceOut;
 
 	public class UserModel extends EventDispatcher
 	{
@@ -58,12 +57,12 @@ package Model
 		
 		public static function get instance():UserModel
 		{
-				if ( _instance == null) {
-					_access = true;
-					_instance = new UserModel();
-					_access = false;
-				}
-				return _instance;
+			if ( _instance == null) {
+				_access = true;
+				_instance = new UserModel();
+				_access = false;
+			}
+			return _instance;
 		}
 		
 		/**
@@ -151,7 +150,7 @@ package Model
 		
 		private function eventHandler(e:NetStatusEvent):void
 		{
-			trace(ObjectUtil.toString(e));
+//			trace(ObjectUtil.toString(e));
 			switch( e.info.code )
 			{
 				case NetEventList.NETCONNECTION_CONNECT_SUCCESS:
@@ -166,7 +165,6 @@ package Model
 		private function syncControl(e:SyncEvent):void
 		{
 			trace("\n========================SyncEvent========================\n", ObjectUtil.toString(e) );
-//			TraceOut.traceout(ObjectUtil.toString(e));
 			var len:int = e.changeList.length;
 			if (len == 1 && e.changeList[0].code == "clear") {
 				initSo();
@@ -183,6 +181,8 @@ package Model
 					var oldValue:Object = e.changeList[i].oldValue;
 					trace("oldValue:", ObjectUtil.toString(oldValue));
 					
+					updateList(e.changeList[i]);
+					
 					if ( self ) {
 						if ( changer.name == self.name) {
 							self = changer;
@@ -191,7 +191,7 @@ package Model
 						if ( changer.isOnLine == false) {
 							//have been changed
 							if (oldValue && oldValue.select == self.name && changer.select == "" ) {
-								trace("oldValue.select:", oldValue.select, "select:",changer.select);
+								trace("oldValue.select:", oldValue.select, "select:", changer.select);
 								finish();
 								return;
 							}
@@ -236,12 +236,8 @@ package Model
 					//finish
 					if (selectBy != null && changer.name == selectBy.name && changer.select == "" && changer.isPublish == false && changer.isPlay == false ) {
 						selectBy = null;
-						TraceOut.traceout("stop publish ");
-						TraceOut.traceout("stop play ");
 						finish();
 					}
-					
-					updateList(e.changeList[i]);
 				} 
 				
 				if ( e.changeList[i].code == "success") {
@@ -263,6 +259,7 @@ package Model
 		 */		
 		private function setProp(name:String, propArray:Array, valueArray:Array):void
 		{
+			trace("setProp", name);
 			
 			for (var i:int=0; i< userList.length; i++) {
 				var user:Object = userList[i];
@@ -271,7 +268,6 @@ package Model
 						user[ propArray[j] ] = valueArray[j];
 					}
 //					trace("user.name", user.name, ObjectUtil.toString( user ));
-					trace('so', so);
 					so.setProperty(user.name, user);
 					so.setDirty(user.name);
 					break;
