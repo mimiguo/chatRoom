@@ -9,13 +9,17 @@
 		<![CDATA[
 			import Model.FMSservice;
 			import Model.UserModel;
+			
 			import MyEvent.CustomEvent;
 			import MyEvent.EventsList;
+			
 			import flash.events.*;
+			
 			import mx.core.IFlexDisplayObject;
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import mx.utils.ObjectUtil;
+			
 			import view.LoginWindow;
 			
 			private var usermodel:UserModel;
@@ -32,6 +36,8 @@
 				usermodel.addEventListener(EventsList.EVENT_LIST_CHANGE, userList.refresh);
 				usermodel.addEventListener(EventsList.READY_TO_CHAT, pubishAndPlay);
 				usermodel.addEventListener(EventsList.EVENT_FINISH_CHAT, finishChat);
+				
+				ExternalInterface.addCallback("myFlexFunction",myFunc);
 			}
 			
 			private function showWindow():void
@@ -78,6 +84,10 @@
 			{
 				stage.fullScreenSourceRect = new Rectangle(7, 7, 639, 479);
 				stage.displayState = StageDisplayState.FULL_SCREEN;
+			}
+			private function myFunc():void
+			{
+				usermodel.logout();
 			}
 		]]>
 	</fx:Script>
