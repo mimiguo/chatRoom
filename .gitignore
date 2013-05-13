@@ -4,5 +4,6 @@
 .settings/
 .DS_Store
 bin-debug/
-html-template/
-
+html-template/history
+html-template/playerProductInstall.swf
+html-template/swfobject.js

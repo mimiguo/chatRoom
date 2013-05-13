@@ -9,17 +9,13 @@
 		<![CDATA[
 			import Model.FMSservice;
 			import Model.UserModel;
-			
 			import MyEvent.CustomEvent;
 			import MyEvent.EventsList;
-			
 			import flash.events.*;
-			
 			import mx.core.IFlexDisplayObject;
 			import mx.core.UIComponent;
 			import mx.managers.PopUpManager;
 			import mx.utils.ObjectUtil;
-			
 			import view.LoginWindow;
 			
 			private var usermodel:UserModel;
@@ -72,6 +68,8 @@
 			private function logout():void
 			{
 				usermodel.logout();	
+				outlineContainer.alpha = 0;
+				showWindow();
 			}
 
 			private function closeHandler(evt:Event):void
