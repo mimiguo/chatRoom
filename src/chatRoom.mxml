@@ -87,6 +87,7 @@
 			}
 			private function myFunc():void
 			{
+//				trace("有偵測到登出");
 				usermodel.logout();
 			}
 		]]>
